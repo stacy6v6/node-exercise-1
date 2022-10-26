@@ -2,12 +2,11 @@ const fs = require('fs')
 
 const [inputFile, outputFile, flag] = process.argv.slice(2)
 
+const convertData = (dataInput) => dataInput.toString().split('\n').map((elem, line) => `${line + 1}: ${elem} \n`).join('')
+
 if (process.argv.slice(2).length === 0) {
   process.stdin.on('data', (data) => {
-    const newData = data.toString().split('\n')
-    for (let line = 0; line < newData.length; line += 1) {
-      console.log(`${line + 1}: ${newData[line]} \n`)
-    }
+    console.log(convertData(data))
   })
 } else {
   if (inputFile === undefined || outputFile === undefined) {
@@ -22,10 +21,7 @@ if (process.argv.slice(2).length === 0) {
     }
 
     let finalData = ''
-    const dataStr = data.split('\n')
-    for (let i = 0; i < dataStr.length; i += 1) {
-      finalData += `${i + 1}: ${dataStr[i]}\n`
-    }
+    finalData = convertData(data)
 
     if (fs.existsSync(outputFile) === true) {
       if (flag !== '-y' && flag !== '-n' && flag !== undefined) {
